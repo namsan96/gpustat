@@ -521,7 +521,10 @@ class GPUStatCollection(object):
         device_count = N.nvmlDeviceGetCount()
 
         for index in range(device_count):
-            handle = N.nvmlDeviceGetHandleByIndex(index)
+            try:
+                handle = N.nvmlDeviceGetHandleByIndex(index)
+            except N.NVMLError:
+                continue
             gpu_info = get_gpu_info(handle)
             gpu_stat = GPUStat(gpu_info)
             gpu_list.append(gpu_stat)
